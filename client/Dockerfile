@@ -5,7 +5,7 @@ WORKDIR /app
 
 
 # Install app dependencies
-COPY package*.json ./
+COPY ./vite-project/package*.json ./
 
 RUN npm i
 
@@ -20,7 +20,7 @@ FROM node:16
 WORKDIR /app
 
 # Install app dependencies
-COPY package*.json ./
+COPY ./vite-project/package*.json ./
 
 RUN npm i 
 
