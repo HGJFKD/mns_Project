@@ -9,7 +9,7 @@ COPY package*.json ./
 
 RUN npm i
 
-COPY . .
+COPY . ./vite-project
 
 RUN npm run build
 
