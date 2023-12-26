@@ -10,7 +10,7 @@ services:
       - '5432:5432'
     volumes:
       - pg:/var/lib/postgresql/data
-      - ./server/db:/docker-entrypoint-initdb.d
+      - ./db:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -54,9 +54,9 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./server/package.json
+          path: ./server/app/package.json
     volumes:
-      - ./server/src:/app/src
+      - ./server/app/src:/app/src
 
   client:
     container_name: client

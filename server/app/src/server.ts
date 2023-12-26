@@ -30,7 +30,7 @@ const dbConnect = async () => {
   };
 
 dbConnect()
-.then(() =>  console.log( "connect  to PG !!!" ))
+.then(() =>  console.log( "connect successfully to PG !!!" ))
 .catch((error) => { console.log('error in pg',error) });
 
 
