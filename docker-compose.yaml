@@ -20,7 +20,7 @@ services:
     image: redis:latest
     restart: always
     ports:
-      - '6379:6379'
+      - '4379:6379'
     command: redis-server --save 20 1 --loglevel warning 
     volumes:
       - ./reids:/data
@@ -44,7 +44,7 @@ services:
       PGNAME: postgres
       PGDATABASE: shopping_list
       REDIS_HOST: redis
-      REDIS_PORT: 6379
+      REDIS_PORT: 4379
       JWT_SECRET: 0ebf64db15d5c7e726491f9df6eed630a63f58027dda470e46b1de4ed1a083079c955df979d30d16189a88dd3700e18a1d9e6f0792c959c33c11e177b52b30a9
       EXPRESSPORT: 4500
     links:
@@ -66,9 +66,9 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./client/vite-project/package.json
+          path: ./client/app/package.json
     volumes:
-    - ./client/vite-project/src:/app/src
+    - ./client/app/src:/app/src
 
 
 

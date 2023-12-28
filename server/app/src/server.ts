@@ -1,46 +1,93 @@
-
-import { createServer } from "http";
-import express from "express";
+import express from 'express';
 import cors from "cors";
-import { Pool } from "pg";
-import { config } from "dotenv";
-import { createClient  } from 'redis';
+import morgan from "morgan";
 
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { ApolloServerErrorCode } from '@apollo/server/errors';
 
-const RedisClient = createClient({
-    url: 'redis://redis:6379'
-});
+import http from 'http';
+import { config } from 'dotenv';
 
-const port = 4000;
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
+import bodyParser from 'body-parser';
 
-const app = express();
+import { resolvers } from './schemas gql/resolves.js';
 
-app.use(cors())
-
-const httpServer = createServer(app);
+import { connectToPg } from './configs/connectToPg.js';
+import { typeDefs } from './schemas gql/schema.js';
+// import ordersRoutes from './routes/ordersRoutes.js';
 
 config()
+const app = express();
 
+const httpServer = http.createServer(app);
 
-const dbConnect = async () => {
-    const pool = new Pool();
-    const res = await pool.connect();
-    res.release();
-    console.log(`\n\nDatabase connection test completed successfully!`);
-  };
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors<cors.CorsRequest>());
+app.use(morgan('dev'));
 
-dbConnect()
-.then(() =>  console.log( "connect successfully to PG !!!" ))
-.catch((error) => { console.log('error in pg',error) });
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
+const port = process.env.SERVER_PORT || 4000;
 
-httpServer.listen(port, () => {
-    console.log(`🚀 Query endpoint ready at http://${port}/graphql`);
-    console.log(
-        `🚀 Subscription endpoint ready at ws://host:${port}/subscriptions`
-    );
+const server = new ApolloServer({
+    schema,
+
+    formatError: (formattedError, error) => {
+        if (
+            formattedError.extensions?.code ===
+            ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED
+        ) {
+            return {
+                ...formattedError,
+                message: "Your query doesn't match the schema. Try double-checking it!",
+            };
+        }
+        return formattedError;
+    },
+
+    plugins: [
+        ApolloServerPluginDrainHttpServer({ httpServer }),
+
+        {
+            async serverWillStart() {
+                return {
+                    async drainServer() {
+                        await wsServerCleanup.dispose();
+                    },
+                };
+            },
+        },
+
+    ],
 });
 
-RedisClient.connect()
-.then(() =>  console.log( "connected successfully to Redis client!!!" ))
-.catch((error) => {  if (error instanceof Error) console.log(error.message) });
+const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/mns",
+});
+
+const wsServerCleanup = useServer({ schema }, wsServer);
+
+
+server.start().then(async () => {
+
+    await connectToPg();    
+    // app.use("/orders", ordersRoutes)
+    app.use(
+        '/mns',
+        bodyParser.json(),
+        expressMiddleware(server)
+    );
+
+    httpServer.listen({ port });
+    console.log(`🚀 Server ready at: ${port}/mns`)
+    console.log(
+        `🚀 Subscription endpoint ready at ws://host:${port}/subscriptions`
+    )
+});

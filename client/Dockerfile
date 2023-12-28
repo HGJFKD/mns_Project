@@ -2,10 +2,10 @@ FROM node:16
 
 WORKDIR /app
 
-COPY ./vite-project/package*.json .
+COPY ./app/package*.json .
 RUN npm i
 
-COPY ./vite-project .
+COPY ./app .
 
 
 EXPOSE 3000
