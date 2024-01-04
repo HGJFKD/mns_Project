@@ -34,7 +34,6 @@ export const NavBtn = styled.div`
     margin: 2px 10px;
     border-radius: 10px;
     cursor: pointer;
-    background: ${(props) => props.open && "#fff"};
     &:hover {
         background: #ffffff24
     }
@@ -49,7 +48,11 @@ export const Newest = styled.div`
     text-shadow: 2px 2px 5px rgb(0 0 0 / 91%);
 `;
 
-export const Arrow = styled.div`
+type ArrowProps ={
+    open: false | "open"
+}
+
+export const Arrow = styled.div<ArrowProps>`
     position: absolute;
     top: 50%;
     right: 20px;
@@ -62,8 +65,8 @@ export const Arrow = styled.div`
         border-width: 5px 0 5px 6px;
         border-color: transparent transparent transparent #ffffff;
         pointer-events: none;
-        transform: ${(props) => props.open ? "rotate(0deg)" : "rotate(90deg)"};
-        border-left: ${(props) => !props.open && "6px solid #ffffff"};
+        transform: ${({open}) => open ? "rotate(0deg)" : "rotate(90deg)"};
+        border-left: ${({open}) => !open && "6px solid #ffffff"};
         transition: all 0.2s;
 }
 `

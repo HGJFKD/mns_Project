@@ -1,17 +1,15 @@
-
 type SideBarButtons = {
-    to: string,
-    icon: React.ReactElement,
-    title: string,
-    subBtn?: string[],
-    span?: string
-    handleClick?: () => void
-}
-
-export type SideBarProps = {
-    open: boolean | undefined,
-    setOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>,
-    handleClick: () => void
+  to: string;
+  icon: React.ReactElement;
+  title: string;
+  subBtn?: string[];
+  span?: string;
 };
 
-export default SideBarButtons
+export type SideBarProps = {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClick: () => void;
+};
+
+export default SideBarButtons;

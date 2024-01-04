@@ -1,23 +1,23 @@
 import styled from "styled-components";
+import { ResponciveProps } from "../propsTypes/ResponcivyTypes";
 
-export const SideBarWrappet = styled.div`
+export const SideBarWrappet = styled.div<ResponciveProps>`
     position: fixed;
     top: 0;
     left: 0;
-    width: 200px;
+    width: ${({open}) => (!open ? '200px' : '0')};
     height: 100vh;
     display: block;
     z-index: 2;
     transition: transform 0.3s ease-in-out;
     @media (max-width: 775px) {
-        display: none;
-        transform: ${({open}) => open? "transleteX(0%)" : "transleteX(-102%)"}
+        transform: ${({open}) => open? "translateX(0%)" : "translateX(-102%)"}
     }
     ;
 `
 
 export const SideBarBody = styled.div`
-    background: linear-gradient(0deg, #640075, #C100E5);
+    background: linear-gradient(0deg, #640075, #cf00f5);
     height: 100vh;
     overflow: hidden;
     @media (max-width: 775px) {

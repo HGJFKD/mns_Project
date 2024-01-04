@@ -1,15 +1,19 @@
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
-
-import { SideBarProps } from '../../types/sideBarButtons'
 import HamburgerWrapper from '../../styledComponents/hamburger/HamburgerWrapper.styled'
+import { FC } from "react";
 
-export const Hamburger = ({ open, setOpen,  handleClick }: SideBarProps) => {
+type HamburgerProps = {
+    on: boolean;
+    toggle: () => void
+}
+export const Hamburger : FC<HamburgerProps> = ({ on, toggle }) => {
+ 
     return (
         <HamburgerWrapper
-            onClick={handleClick}
+            onClick={toggle}
         > 
-            {open ? (
+            {on ? (
                 <i><GiHamburgerMenu/></i>
             ) : (
                 <i><IoMdClose/></i>
