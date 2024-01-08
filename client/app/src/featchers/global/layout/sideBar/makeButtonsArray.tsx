@@ -5,9 +5,8 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoMdAnalytics } from "react-icons/io";
 import { FaCalendarAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
-
-
-
+import { RiCentosFill } from "react-icons/ri";
+import { FaNewspaper } from "react-icons/fa6";
 
 
 
@@ -18,21 +17,15 @@ const makeBottons: SideBarButtons[] = [
         title: "Dashboard"
     },
     {
-        to: "dashboard/profile",
-        icon: <i> <MdAccountCircle /></i>,
-        title: "Profile",
-        subBtn: ["Passwords", "Mail", "Accounts"]
-    },
-    {
-        to: "dashboard/features",
-        icon: <i className="fa-solid fa-bag-shopping"> </i>,
-        title: "Features",
+        to: "dashboard/newspaper",
+        icon: <i> <FaNewspaper/> </i>,
+        title: "NewsPaper",
         subBtn: ["Pages", "Elements", "Portofilio"]
     },
     {
-        to: "dashboard/revenue",
-        icon: <i className="fa-solid fa-square-poll-vertical"> </i>,
-        title: "Revenue"
+        to: "dashboard/orders",
+        icon: <i> <RiCentosFill/> </i>,
+        title: "Orders",
     },
     {
         to: "dashboard/analytics",
@@ -45,10 +38,10 @@ const makeBottons: SideBarButtons[] = [
         title: "Calendar"
     },
     {
-        to: "dashboard/wallets",
-        icon: <i className="fa-solid fa-wallet"> </i>,
-        title: "Wallets",
-        span: "New"
+        to: "dashboard/profile",
+        icon: <i> <MdAccountCircle /></i>,
+        title: "Profile",
+        subBtn: ["Passwords", "Mail", "Accounts"]
     },
     {
         to: "dashboard/contens/settings",

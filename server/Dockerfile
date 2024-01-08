@@ -1,11 +1,11 @@
 FROM node:16
 
-WORKDIR /app
+WORKDIR /app/nest
 
-COPY ./app/package*.json .
+COPY ./app/nest/package*.json .
 
 
-COPY ./app .
+COPY ./app/nest .
 RUN npm install 
 
 CMD ["npm", "start"]
